@@ -15,7 +15,10 @@ public class TimeHop : MonoBehaviour
     {
         if(collision.CompareTag("Player"))
         {
-            thManager.currentState = state;
+            if (thManager.currentState != this.state)
+            {
+                thManager.ChangeTime(state);
+            }
         }
     }
 }

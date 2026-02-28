@@ -12,6 +12,7 @@ public class TimehopManager : MonoBehaviour
 {
     [Header("Timehop Settings")]
     [SerializeField] public TimehopState currentState;
+    private bool isFading = false;
 
     [Header("Sprites")]
     [SerializeField] private Sprite morningSprite;
@@ -19,21 +20,16 @@ public class TimehopManager : MonoBehaviour
     [SerializeField] private Sprite eveningSprite;
 
     [Header("Renderers")]
-    [SerializeField] private SpriteRenderer currentSky; // ตัวปัจจุบัน
+    [SerializeField] private SpriteRenderer currentSky; 
     [SerializeField] private SpriteRenderer nextSky;
 
     [Header("Animation")]
-    [SerializeField] private float fadeDuration = 1.0f; // ระยะเวลาการ Fade
+    [SerializeField] private float fadeDuration = 1.0f; // fade sky time
 
 
-    // Update is called once per frame
-    void Update()
+    public void ChangeTime(TimehopState newState)
     {
-       ChangeTime (currentState);
-    }
-
-    public void ChangeTime  ( TimehopState newState)
-    {
+        if (isFading || currentState == newState) return;
         Sprite targetSprite = null;
         switch (newState)
         {
@@ -43,12 +39,16 @@ public class TimehopManager : MonoBehaviour
         }
         if (targetSprite != null)
         {
+            currentState = newState;
             StartCoroutine(CrossfadeSky(targetSprite));
         }
+        //Debug.Log($"Timehop state changed to: {newState}");
+        //Debug.Log($"Current fading state: {isFading}");
+    }
 
    IEnumerator CrossfadeSky(Sprite nextSprite)
     {
-        // 1. ตั้งค่าภาพใหม่เตรียมไว้ (แต่ยังให้ล่องหนอยู่)
+        isFading = true;
         nextSky.sprite = nextSprite;
         nextSky.color = new Color(1, 1, 1, 0);
 
@@ -59,18 +59,16 @@ public class TimehopManager : MonoBehaviour
             elapsedTime += Time.deltaTime;
             float alpha = elapsedTime / fadeDuration;
 
-            // 2. ค่อยๆ จางตัวเก่าออก และจางตัวใหม่เข้า
             currentSky.color = new Color(1, 1, 1, 1 - alpha);
             nextSky.color = new Color(1, 1, 1, alpha);
 
             yield return null;
         }
 
-        // 3. เมื่อจบการ Fade ให้สลับตัวแปรกัน เพื่อเตรียมสำหรับการ Fade ครั้งต่อไป
         currentSky.sprite = nextSprite;
         currentSky.color = new Color(1, 1, 1, 1);
         nextSky.color = new Color(1, 1, 1, 0);
+        isFading = false;
     }
 
-}
 }
