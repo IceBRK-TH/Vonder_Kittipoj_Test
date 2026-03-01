@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c03c2648a98c424585108214299f39f, type: 3}
+  m_Name: 8_Redpotion
+  m_EditorClassIdentifier: 
+  id: 8
+  itemName: RedPotion
+  icon: {fileID: 21300000, guid: a0b185116ea44bf4e8670a870fbeb6a3, type: 3}
+  type: 2
+  prefabToPlace: {fileID: 4970547161397370810, guid: cace06951ed204b4595eeed5d7bea96e, type: 3}
