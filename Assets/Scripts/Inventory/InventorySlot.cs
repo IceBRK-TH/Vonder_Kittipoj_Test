@@ -82,6 +82,7 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void OnDrop(PointerEventData eventData)
     {
+        Debug.Log($"Mouse just dropped an item onto: {gameObject.name}");
         GameObject draggedObject = eventData.pointerDrag;
         if (draggedObject != null)
         {

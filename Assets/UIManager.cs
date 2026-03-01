@@ -20,7 +20,6 @@ public class UIManager : MonoBehaviour
             allUiSlots.AddRange(quickAccessParent.GetComponentsInChildren<InventorySlot>());
         }
 
-        // 2. Grab the 40 Backpack slots and add them to the SAME list
         if (backpackParent != null)
         {
             allUiSlots.AddRange(backpackParent.GetComponentsInChildren<InventorySlot>());
