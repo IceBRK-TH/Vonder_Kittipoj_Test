@@ -16,3 +16,4 @@ MonoBehaviour:
   itemName: Pickaxe
   icon: {fileID: 21300000, guid: 0c5077e59c4b8ae42b3771b337b76534, type: 3}
   type: 1
+  prefabToPlace: {fileID: 4970547161397370810, guid: b1be5932a406ebe499020912670ba864, type: 3}

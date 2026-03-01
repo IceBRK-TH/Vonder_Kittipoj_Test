@@ -19,8 +19,8 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager Instance;
 
     [Header("Settings")]
-    public int maxInventorySlots = 46; 
-
+    public int maxInventorySlots = 46;
+    public Transform playerTransform;
     public List<InventorySlotData> inventory = new List<InventorySlotData>();
 
     [Header("Equipment State")]
@@ -159,7 +159,7 @@ public class InventoryManager : MonoBehaviour
                 break;
 
             case ItemType.Placeable:
-               //EnterPlacementMode(item, slotIndex);
+                PlaceItemAtPlayer(slotIndex);
                 break;
 
             case ItemType.Consumable:
@@ -218,5 +218,55 @@ public class InventoryManager : MonoBehaviour
         }
        
         RefreshUI(); // Update the whole screen
+    }
+
+    private void PlaceItemAtPlayer(int slotIndex)
+    {
+        Item item = inventory[slotIndex].item;
+
+        if (item.prefabToPlace != null)
+        {
+            // Instantiate the 'Visual Only' sprite at the player's current position
+            Instantiate(item.prefabToPlace, playerTransform.position, Quaternion.identity);
+
+            // Reduce the stack count in the backpack
+            inventory[slotIndex].amount--;
+
+            // If the stack hits zero, clear the item data
+            if (inventory[slotIndex].amount <= 0)
+            {
+                inventory[slotIndex].item = null;
+            }
+
+            // Update the 46-slot UI (Hotbar and Backpack)
+            RefreshUI();
+        }
+    }
+
+    public void MoveOneToCrafting(int invIndex, int craftingSlotIndex)
+    {
+        // 1. Reference the item in your 40-slot backpack
+        Item itemToMove = inventory[invIndex].item;
+
+        if (itemToMove == null || inventory[invIndex].amount <= 0) return;
+
+        // 2. Add only ONE to the CraftingManager
+        // We create a new method in CraftingManager called 'AddOneToInput'
+        bool success = CraftingManager.Instance.AddOneToInput(craftingSlotIndex, itemToMove);
+
+        if (success)
+        {
+            // 3. Subtract only ONE from your backpack
+            inventory[invIndex].amount--;
+
+            // 4. If the stack is now empty, clear the item data
+            if (inventory[invIndex].amount <= 0)
+            {
+                inventory[invIndex].item = null;
+            }
+
+            // 5. Refresh the 46-slot main UI
+            RefreshUI();
+        }
     }
 }

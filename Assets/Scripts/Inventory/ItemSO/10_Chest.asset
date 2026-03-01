@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8c03c2648a98c424585108214299f39f, type: 3}
-  m_Name: 8_Redpotion
+  m_Name: 10_Chest
   m_EditorClassIdentifier: 
-  id: 8
-  itemName: RedPotion
-  icon: {fileID: 21300000, guid: a0b185116ea44bf4e8670a870fbeb6a3, type: 3}
-  type: 2
-  prefabToPlace: {fileID: 4970547161397370810, guid: cace06951ed204b4595eeed5d7bea96e, type: 3}
+  id: 10
+  itemName: Chest
+  icon: {fileID: 21300000, guid: 1128552f4ead9ba4ab4e540b11cdb14e, type: 3}
+  type: 5
+  prefabToPlace: {fileID: 4970547161397370810, guid: 8e30cb6636331d54e9100cc6363aefcd, type: 3}

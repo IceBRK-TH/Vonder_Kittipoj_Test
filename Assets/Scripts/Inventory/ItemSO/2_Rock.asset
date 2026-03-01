@@ -16,3 +16,4 @@ MonoBehaviour:
   itemName: Rock
   icon: {fileID: 21300000, guid: 7784fb306c8b16444b1437f291137cd4, type: 3}
   type: 0
+  prefabToPlace: {fileID: 4970547161397370810, guid: 0fc15c49084169248aab92e9a2b7ce19, type: 3}

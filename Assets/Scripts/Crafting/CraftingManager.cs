@@ -90,4 +90,51 @@ public class CraftingManager : MonoBehaviour
             outputSlot.ClearSlot();
         }
     }
+    public void SetInputItem(int slotIndex, Item newItem, int newAmount)
+    {
+        if (slotIndex >= 0 && slotIndex < inputSlots.Length)
+        {
+            // If there was already an item here, you might want to return it to the bag
+            if (inputSlots[slotIndex].item != null)
+            {
+                InventoryManager.Instance.AddItem(inputSlots[slotIndex].item, inputSlots[slotIndex].amount);
+            }
+
+            // Set the new item
+            inputSlots[slotIndex].UpdateSlot(newItem, newAmount);
+        }
+    }
+
+    // This allows the CraftingInputSlot to refresh its own UI
+    public InventorySlotData GetInputSlotData(int slotIndex)
+    {
+        if (slotIndex >= 0 && slotIndex < inputSlots.Length)
+        {
+            return new InventorySlotData(inputSlots[slotIndex].item, inputSlots[slotIndex].amount);
+        }
+        return new InventorySlotData(null, 0);
+    }
+
+    public bool AddOneToInput(int slotIndex, Item newItem)
+    {
+        if (slotIndex < 0 || slotIndex >= inputSlots.Length) return false;
+
+        CraftingInputSlot targetSlot = inputSlots[slotIndex];
+
+        // Case A: The slot is empty
+        if (targetSlot.item == null)
+        {
+            targetSlot.UpdateSlot(newItem, 1);
+            return true;
+        }
+        // Case B: The slot already has the SAME item (increment stack)
+        else if (targetSlot.item == newItem && newItem.IsStackable)
+        {
+            targetSlot.UpdateSlot(newItem, targetSlot.amount + 1);
+            return true;
+        }
+
+        // Return false if trying to place a different item in a filled slot
+        return false;
+    }
 }
