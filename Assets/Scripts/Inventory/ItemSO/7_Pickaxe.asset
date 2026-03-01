@@ -10,10 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8c03c2648a98c424585108214299f39f, type: 3}
-  m_Name: Item_0
+  m_Name: 7_Pickaxe
   m_EditorClassIdentifier: 
-  id: 0
-  itemName: Log
-  icon: {fileID: 21300000, guid: 435e6bd1b62352f43a1701b74e0027b2, type: 3}
-  num: 0
-  isStackable: 1
+  id: 7
+  itemName: Pickaxe
+  icon: {fileID: 21300000, guid: 0c5077e59c4b8ae42b3771b337b76534, type: 3}
+  type: 1
