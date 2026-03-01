@@ -110,14 +110,21 @@ public class InventoryManager : MonoBehaviour
 
     public void SwapItems(int indexA, int indexB)
     {
-        // Simple data swap
+        // Check if both indices are within the valid 0-45 range
+        if (indexA < 0 || indexA >= inventory.Count || indexB < 0 || indexB >= inventory.Count)
+        {
+            Debug.LogWarning("Swap aborted: One of the indices is outside the 46-slot inventory range.");
+            return;
+        }
+
+        // Normal swap logic continues here...
         InventorySlotData temp = inventory[indexA];
         inventory[indexA] = inventory[indexB];
         inventory[indexB] = temp;
 
-        RefreshUI(); // Update the screen to show the new positions
+        RefreshUI();
     }
-    private void RefreshUI()
+    public void RefreshUI()
     {
         if (UIManager.Instance != null)
         {

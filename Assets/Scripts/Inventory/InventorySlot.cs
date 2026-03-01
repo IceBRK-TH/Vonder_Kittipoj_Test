@@ -8,6 +8,7 @@ public  abstract class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHa
 {
     public int slotIndex;
 
+
     public Item item;
     public int amount;
 
@@ -47,10 +48,11 @@ public  abstract class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHa
         {
             iconImage.sprite = null;
             iconImage.enabled = false;
+            iconImage.transform.localPosition = Vector3.zero;
         }
         if (amountText != null) amountText.text = "";
     }
-    public void OnBeginDrag(PointerEventData eventData)
+    public virtual void OnBeginDrag(PointerEventData eventData)
     {
         if (iconImage.sprite == null) return;
 
@@ -76,25 +78,40 @@ public  abstract class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHa
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (iconImage.sprite == null) return;
+        if (iconImage != null && originalParent != null)
+        {
+            iconImage.transform.SetParent(originalParent);
+            iconImage.transform.localPosition = Vector3.zero;
+            iconImage.raycastTarget = true; // This un-freezes the slot!
+        }
 
-        iconImage.transform.SetParent(originalParent);
-        iconImage.transform.localPosition = Vector3.zero;
-        iconImage.raycastTarget = true;
     }
 
     public virtual void OnDrop(PointerEventData eventData)
     {
-        Debug.Log($"Mouse just dropped an item onto: {gameObject.name}");
-        GameObject draggedObject = eventData.pointerDrag;
-        if (draggedObject != null)
-        {
-            InventorySlot draggedSlot = draggedObject.GetComponent<InventorySlot>();
+        InventorySlot draggedSlot = eventData.pointerDrag.GetComponent<InventorySlot>();
+        if (draggedSlot == null) return;
 
-            if (draggedSlot != null && draggedSlot != this)
-            {
-                InventoryManager.Instance.SwapItems(draggedSlot.slotIndex, this.slotIndex);
-            }
+        // 1. Identify the Source
+        bool isFromOutput = draggedSlot is CraftingOutputSlot;
+        bool isFromBackpack = !isFromOutput && (draggedSlot.slotIndex >= 0 && draggedSlot.slotIndex <= 45);
+
+        // 2. Handle Crafting Result (The "Claim" Logic)
+        if (isFromOutput)
+        {
+            // Add item to the real 46-slot data list
+            InventoryManager.Instance.AddItem(draggedSlot.item, draggedSlot.amount);
+
+            // Clean up the 10 logs in the grid
+            CraftingManager.Instance.OnCraftComplete();
+
+            return; // STOP HERE! This prevents the split/double-spawn
+        }
+
+        // 3. Handle Normal Swap (Only for 0-45)
+        if (isFromBackpack && this.slotIndex >= 0 && this.slotIndex <= 45)
+        {
+            InventoryManager.Instance.SwapItems(draggedSlot.slotIndex, this.slotIndex);
         }
     }
 }

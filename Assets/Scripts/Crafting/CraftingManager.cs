@@ -28,8 +28,6 @@ public class CraftingManager : MonoBehaviour
     }
     public void OnCraftComplete()
     {
-        InventoryManager.Instance.AddItem(chestItem, 1);
-
         int[] borderIndices = { 0, 1, 2, 3, 4, 7, 8, 9, 10, 11 };
         foreach (int i in borderIndices)
         {
@@ -45,7 +43,18 @@ public class CraftingManager : MonoBehaviour
             }
         }
 
-        CheckRecipe();
+       // 1. Wipe the "Result" data so the Output Slot becomes empty
+    currentResultItem = null;
+    currentResultAmount = 0;
+    
+    // 2. Tell the Output UI to clear its image
+    if (outputSlot != null) outputSlot.ClearSlot();
+
+    // 3. Sync the 46-slot inventory UI
+    InventoryManager.Instance.RefreshUI(); 
+
+    // 4. Re-check the pattern
+    CheckRecipe();
     }
 
     public void ClearCraftingInput()

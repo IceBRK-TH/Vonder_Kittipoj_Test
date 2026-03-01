@@ -3,9 +3,18 @@ using UnityEngine.EventSystems;
 
 public class CraftingOutputSlot : InventorySlot
 {
-    // Block players from dropping items INTO the output
+    public override void OnBeginDrag(PointerEventData eventData)
+    {
+        // 1. Check if there is actually a crafted item to drag
+        if (this.item == null) return;
+
+        // 2. Call the parent drag logic so the icon follows the mouse
+        base.OnBeginDrag(eventData);
+    }
+
     public override void OnDrop(PointerEventData eventData)
     {
+        // Keep this empty so players can't drop things INTO the result
         Debug.Log("Cannot drop items into the output slot!");
     }
 

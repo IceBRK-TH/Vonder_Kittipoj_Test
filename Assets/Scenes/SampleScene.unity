@@ -1536,7 +1536,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1127835930104876361, guid: 908c0053b9a2c2c43949bf70b46b269f, type: 3}
       propertyPath: slotIndex
-      value: 201
+      value: 61
       objectReference: {fileID: 0}
     - target: {fileID: 3956062473325491962, guid: 908c0053b9a2c2c43949bf70b46b269f, type: 3}
       propertyPath: m_Name
