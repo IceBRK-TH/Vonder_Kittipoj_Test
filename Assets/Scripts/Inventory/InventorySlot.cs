@@ -92,24 +92,24 @@ public  abstract class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHa
         InventorySlot draggedSlot = eventData.pointerDrag.GetComponent<InventorySlot>();
         if (draggedSlot == null) return;
 
-        // 1. Identify the Source
-        bool isFromOutput = draggedSlot is CraftingOutputSlot;
-        bool isFromBackpack = !isFromOutput && (draggedSlot.slotIndex >= 0 && draggedSlot.slotIndex <= 45);
-
-        // 2. Handle Crafting Result (The "Claim" Logic)
-        if (isFromOutput)
+        // 1. Is it coming FROM the CHEST?
+        if (draggedSlot is ChestSlot)
         {
-            // Add item to the real 46-slot data list
-            InventoryManager.Instance.AddItem(draggedSlot.item, draggedSlot.amount);
-
-            // Clean up the 10 logs in the grid
-            CraftingManager.Instance.OnCraftComplete();
-
-            return; // STOP HERE! This prevents the split/double-spawn
+            // Tell the ChestUIManager to swap Chest Data with Player Data
+            ChestUIManager.Instance.SwapPlayerAndChest(this.slotIndex, draggedSlot.slotIndex);
+            return; // STOP!
         }
 
-        // 3. Handle Normal Swap (Only for 0-45)
-        if (isFromBackpack && this.slotIndex >= 0 && this.slotIndex <= 45)
+        // 2. Is it coming FROM the CRAFTING RESULT?
+        if (draggedSlot is CraftingOutputSlot)
+        {
+            InventoryManager.Instance.AddItem(draggedSlot.item, draggedSlot.amount);
+            CraftingManager.Instance.OnCraftComplete();
+            return; // STOP!
+        }
+
+        // 3. Normal Backpack to Backpack Swap (0-45)
+        if (draggedSlot.slotIndex >= 0 && draggedSlot.slotIndex < 46)
         {
             InventoryManager.Instance.SwapItems(draggedSlot.slotIndex, this.slotIndex);
         }
