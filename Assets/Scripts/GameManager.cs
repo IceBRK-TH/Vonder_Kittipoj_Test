@@ -15,13 +15,22 @@ public class GameManager : MonoBehaviour
         {
             if (starterItem[i] != null)
             {
-                inventoryManager.AddItem(starterItem[i], starterAmount);
-                Debug.Log($"GameManager: Added {starterAmount} {starterItem[i].itemName} to inventory at start.");
+                if (starterItem[i].type == ItemType.Consumable || starterItem[i].type == ItemType.Seed || starterItem[i].type == ItemType.Resources)
+                {
+                    inventoryManager.AddItem(starterItem[i], starterAmount);
+                    Debug.Log($"GameManager: Added {starterAmount} {starterItem[i].itemName} to inventory at start.");
+                }
+                else
+                {
+                    inventoryManager.AddItem(starterItem[i], 1);
+                    Debug.Log($"GameManager: Added 1 {starterItem[i].itemName} to inventory at start.");
+                }
             }
             else
             {
                 Debug.LogWarning($"GameManager: Starter item at index {i} is not assigned in the Inspector!");
             }
+            
         }
     }
     void Update()

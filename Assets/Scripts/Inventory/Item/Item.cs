@@ -8,6 +8,7 @@ public enum ItemType
     Resources,
     Tool,
     Consumable,
+    Weapon,
     Equipment,
     Placeable,
     Seed
@@ -20,6 +21,7 @@ public class Item : ScriptableObject
     public string itemName;
     public Sprite icon;
     public ItemType type;
+    public GameObject prefabToPlace;
 
     public bool IsStackable => (type == ItemType.Resources || type == ItemType.Seed || type == ItemType.Consumable);
     public int MaxStack => IsStackable ? 10 : 1;

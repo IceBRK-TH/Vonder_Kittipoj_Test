@@ -15,4 +15,5 @@ MonoBehaviour:
   id: 3
   itemName: Carrot
   icon: {fileID: 21300000, guid: 4e39b24635fc0e745975d8ef9872e976, type: 3}
-  type: 5
+  type: 6
+  prefabToPlace: {fileID: 0}

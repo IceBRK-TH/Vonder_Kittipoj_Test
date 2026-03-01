@@ -4,9 +4,12 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler , IDropHandler
+public  abstract class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler , IDropHandler
 {
     public int slotIndex;
+
+    public Item item;
+    public int amount;
 
     [SerializeField] private Image iconImage;
     [SerializeField] private TextMeshProUGUI amountText;
@@ -22,10 +25,13 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             Debug.LogError($"CRITICAL: Slot {gameObject.name} cannot find a Canvas!");
         }
     }
-    
-    public void UpdateSlot(Item item, int amount)
+
+    public void UpdateSlot(Item newItem, int newAmount)
     {
         if (iconImage == null || amountText == null) return;
+
+        this.item = newItem;
+        this.amount = newAmount;
 
         iconImage.sprite = item.icon;
         iconImage.enabled = true;
@@ -34,16 +40,15 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void ClearSlot()
     {
+        this.item = null;
+        this.amount = 0;
+
         if (iconImage != null)
         {
             iconImage.sprite = null;
             iconImage.enabled = false;
         }
-
-        if (amountText != null)
-        {
-            amountText.text = "";
-        }
+        if (amountText != null) amountText.text = "";
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -51,12 +56,10 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
         originalParent = iconImage.transform.parent;
 
-        // 2. Safely use the locked-in Canvas
         if (canvas != null)
         {
             iconImage.transform.SetParent(canvas.transform);
 
-            // 3. Force the dragged icon to the very front of the screen!
             iconImage.transform.SetAsLastSibling();
         }
 
@@ -80,7 +83,7 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         iconImage.raycastTarget = true;
     }
 
-    public void OnDrop(PointerEventData eventData)
+    public virtual void OnDrop(PointerEventData eventData)
     {
         Debug.Log($"Mouse just dropped an item onto: {gameObject.name}");
         GameObject draggedObject = eventData.pointerDrag;

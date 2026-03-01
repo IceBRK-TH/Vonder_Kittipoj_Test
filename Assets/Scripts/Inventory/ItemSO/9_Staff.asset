@@ -15,4 +15,5 @@ MonoBehaviour:
   id: 9
   itemName: Staff
   icon: {fileID: 893792480, guid: 4afd11bbf012a764d84a49124d48f014, type: 3}
-  type: 1
+  type: 3
+  prefabToPlace: {fileID: 0}

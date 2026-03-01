@@ -15,4 +15,5 @@ MonoBehaviour:
   id: 4
   itemName: Chestplate
   icon: {fileID: 21300000, guid: 1d54230169f7e1349a69adcfff258b77, type: 3}
-  type: 3
+  type: 4
+  prefabToPlace: {fileID: 0}

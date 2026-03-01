@@ -23,6 +23,16 @@ public class InventoryManager : MonoBehaviour
 
     public List<InventorySlotData> inventory = new List<InventorySlotData>();
 
+    [Header("Equipment State")]
+    public Item equippedWeapon;
+    public Item equippedArmor;
+    public Item equippedLeggings;
+
+    [Header("Equipment UI Reference")]
+    public EquipSlot weaponSlotUI;
+    public EquipSlot armorSlotUI;
+    public EquipSlot armorSlotUI2;
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -32,6 +42,16 @@ public class InventoryManager : MonoBehaviour
         {
             inventory.Add(new InventorySlotData(null, 0));
         }
+    }
+    void Update()
+    {
+        // Detect keys 1 through 6
+        if (Input.GetKeyDown(KeyCode.Alpha1)) UseItem(0);
+        if (Input.GetKeyDown(KeyCode.Alpha2)) UseItem(1);
+        if (Input.GetKeyDown(KeyCode.Alpha3)) UseItem(2);
+        if (Input.GetKeyDown(KeyCode.Alpha4)) UseItem(3);
+        if (Input.GetKeyDown(KeyCode.Alpha5)) UseItem(4);
+        if (Input.GetKeyDown(KeyCode.Alpha6)) UseItem(5);
     }
     public void AddItem(Item itemToAdd, int amountToAdd)
     {
@@ -122,5 +142,81 @@ public class InventoryManager : MonoBehaviour
 
         // 3. Update the UI to show the empty slot
         RefreshUI(); // Or UIManager.Instance.RefreshInventoryUI(inventory);
+    }
+
+    public void UseItem(int slotIndex)
+    {
+        InventorySlotData slot = inventory[slotIndex];
+        if (slot.item == null) return;
+
+        Item item = slot.item;
+
+        switch (item.type)
+        {
+            case ItemType.Equipment:
+            case ItemType.Tool:
+                EquipItem(slotIndex,0);
+                break;
+
+            case ItemType.Placeable:
+               //EnterPlacementMode(item, slotIndex);
+                break;
+
+            case ItemType.Consumable:
+                UseConsumable(slotIndex);
+                break;
+        }
+    }
+
+    public void UseConsumable(int slotIndex)
+    {
+        InventorySlotData slot = inventory[slotIndex];
+        if (slot.item == null || slot.item.type != ItemType.Consumable) return;
+
+        // Apply Effect (e.g., PlayerHealth.Heal(slot.item.powerValue))
+        Debug.Log($"Used {slot.item.itemName}. ");
+
+        slot.amount--;
+        if (slot.amount <= 0) slot.item = null;
+
+        RefreshUI();
+    }
+    public void EquipItem(int invIndex, int equipType)
+    {
+        Item itemToEquip = inventory[invIndex].item;
+        if (itemToEquip == null) return;
+        if (equipType == 0) // Weapon
+        {
+            // 2. The Swap: Store the current weapon so we don't lose it
+            Item oldWeapon = equippedWeapon;
+            equippedWeapon = itemToEquip;
+
+            // 3. Put the old weapon (or null) back into the backpack
+            inventory[invIndex].item = oldWeapon;
+            inventory[invIndex].amount = (oldWeapon != null) ? 1 : 0;
+
+            // 4. Force the UI to update
+            if (weaponSlotUI != null) weaponSlotUI.RefreshSlotUI();
+        }
+        else if (equipType == 1) // Armor
+        {
+            Item oldArmor = equippedArmor;
+            equippedArmor = itemToEquip;
+            inventory[invIndex].item = oldArmor;
+            inventory[invIndex].amount = (oldArmor != null) ? 1 : 0;
+
+            if (armorSlotUI != null) armorSlotUI.RefreshSlotUI();
+        }
+        else if (equipType == 2) // Leggings
+        {
+            Item oldLeggings = equippedLeggings;
+            equippedLeggings = itemToEquip;
+            inventory[invIndex].item = oldLeggings;
+            inventory[invIndex].amount = (oldLeggings != null) ? 1 : 0;
+
+            if (armorSlotUI2 != null) armorSlotUI2.RefreshSlotUI();
+        }
+       
+        RefreshUI(); // Update the whole screen
     }
 }
