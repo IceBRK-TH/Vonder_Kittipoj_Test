@@ -104,4 +104,23 @@ public class InventoryManager : MonoBehaviour
             UIManager.Instance.RefreshInventoryUI(inventory);
         }
     }
+    public void RemoveItem(int slotIndex)
+    {
+        // 1. Check if index is valid for our padded list
+        if (slotIndex < 0 || slotIndex >= inventory.Count)
+        {
+            Debug.LogError($"InventoryManager: Invalid remove index {slotIndex}");
+            return;
+        }
+
+        // 2. Clear the data in that slot (make it empty)
+        // Setting item to null and amount to 0 effectively removes it from our padded list data structure
+        inventory[slotIndex].item = null;
+        inventory[slotIndex].amount = 0;
+
+        Debug.Log($"InventoryManager: Item removed from slot {slotIndex}");
+
+        // 3. Update the UI to show the empty slot
+        RefreshUI(); // Or UIManager.Instance.RefreshInventoryUI(inventory);
+    }
 }
