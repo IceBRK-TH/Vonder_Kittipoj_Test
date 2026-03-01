@@ -11,16 +11,33 @@ step 4-5 in Day 2 (Inventory and Crafting)
 step 6 in Day 3 (Combat System ) and check every system before sends
   
 Work Progress Day 1 (26/2/2026) :
-- Initial Setup 30 mins (Add Asset Finding Asset to use)
-- Create Scene And Character  10 mins
-- Movement System + Jumping 30 mins
+- Thinking Plan Progress 1 hour
+- Initial Setup 1 hour (Add Asset Finding Asset to use)
+- Create Scene And Character  1 hour
+- Movement System + Jumping 1 hour
 
 Rest day and doing some errands (27/2/2026)
 
 Work Progress Day 2 (28/2/2026):
-- Thinking Timehop system and how it works (1 hour)
+- Thinking Timehop system and how it works (2 hours)
   Decision : going to make an animation of transition of image when trigger a collider in map
   Conclusion : Find asset of sky and some object to make it trigger
   Problem : After trying what i thought it failed cause didn't at check on TriggerCollision2D
-- Fixing Time hop problem : fixing how it works that it doesn't change and keep blinking(2 hours)
-- Thinking Inventory and how it works (30 minutes)
+- Fixing Time hop problem : fixing how it works that it doesn't change and keep blinking(4 hours)
+- Thinking Inventory and how it works and start make Inventory System(3 hours)
+
+Work Progress Day 3 (1/3/2026):
+- Work on the same chores with Item and Inventory System (4 Hours)
+- Crafting System (3 hours)
+- Chest (1 hour)
+Problem : Struggling with how to make a many kind of slot that have to be for crafing and input output chest
+
+Result of 3 Days : 
+Finished task : Inventory and Timehop System
+Unfinished task : Combat System 
+Estimated time to finish : 1 day will finish cause left only
+Attack System estimated time : 1 hour
+Enemy AI and Behaviour : 5 hours
+Arcane Area : 1-2 hours
+
+--------- END ------------
