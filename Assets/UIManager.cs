@@ -6,35 +6,41 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance;
 
     [Header("UI References")]
-    [SerializeField] private Transform slotParent; 
+    [SerializeField] private Transform quickAccessParent; 
+    [SerializeField] private Transform backpackParent;
 
-    private InventorySlot[] uiSlots;
+    private List<InventorySlot> allUiSlots = new List<InventorySlot>();
 
     private void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
-        if (slotParent != null)
+        if (quickAccessParent != null)
         {
-            uiSlots = slotParent.GetComponentsInChildren<InventorySlot>();
+            allUiSlots.AddRange(quickAccessParent.GetComponentsInChildren<InventorySlot>());
+        }
+
+        // 2. Grab the 40 Backpack slots and add them to the SAME list
+        if (backpackParent != null)
+        {
+            allUiSlots.AddRange(backpackParent.GetComponentsInChildren<InventorySlot>());
         }
     }
 
     public void RefreshInventoryUI(List<InventorySlotData> inventoryList)
     {
-        // 1. Clear existing UI slots
-        foreach (var slot in uiSlots)
+        for (int i = 0; i < allUiSlots.Count; i++)
         {
-            slot.ClearSlot();
-        }
+            allUiSlots[i].slotIndex = i; 
 
-        // 2. Fill slots from left to right based on the new List
-        for (int i = 0; i < inventoryList.Count; i++)
-        {
-            // Stop if we run out of physical UI slots
-            if (i >= uiSlots.Length) break;
-
-            uiSlots[i].UpdateSlot(inventoryList[i].item, inventoryList[i].amount);
+            if (i < inventoryList.Count && inventoryList[i].item != null)
+            {
+                allUiSlots[i].UpdateSlot(inventoryList[i].item, inventoryList[i].amount);
+            }
+            else
+            {
+                allUiSlots[i].ClearSlot();
+            }
         }
     }
 }

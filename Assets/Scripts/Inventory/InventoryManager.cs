@@ -19,7 +19,7 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager Instance;
 
     [Header("Settings")]
-    public int maxInventorySlots = 10; // Check this in the Inspector!
+    public int maxInventorySlots = 46; // Check this in the Inspector!
 
     public List<InventorySlotData> inventory = new List<InventorySlotData>();
 
